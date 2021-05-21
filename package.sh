@@ -70,7 +70,7 @@ rm -rf tmp
 # TKG
 
 cp -r deployment/tkg package
-cp -r deployment/helm/postfacto-*.tgz package/tkg
+#cp -r deployment/helm/postfacto-*.tgz package/tkg
 cp -r deployment/deploy-tkg.sh package/tkg/deploy.sh
 cp -r deployment/upgrade-tkg.sh package/tkg/upgrade.sh
 cp -r deployment/mixpanel.sh package/tkg/mixpanel.sh
