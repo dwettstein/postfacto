@@ -30,10 +30,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 mkdir -p "$(pwd)/docker_node_modules"
 
+curr_dir="C:\Users\David\Development\Retrospectives\postfacto"
+
 docker run -it \
   --entrypoint /bin/bash \
   -p 3000:3000 \
   -p 4000:4000 \
-  -v "$(pwd)":/postfacto \
-  -v "$(pwd)/docker_node_modules:/postfacto/web/node_modules" \
+  -v "${curr_dir}:/postfacto" \
+  -v "${curr_dir}\docker_node_modules:/postfacto/web/node_modules" \
   postfacto/dev:2.6.3-12.6.0
