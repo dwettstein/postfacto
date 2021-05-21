@@ -41,9 +41,7 @@ context 'Felicity', type: :feature, js: true, if: ENV['USE_MOCK_GOOGLE'] == 'tru
       end
 
       specify 'they can learn about retros' do
-        click_on 'What\'s a retro?'
-        select_last_tab
-        expect(page).to have_content('How to Run a Really Good Retrospective')
+        expect(page).to have_link('What\'s a retro?', href: 'https://builttoadapt.io/how-to-run-a-really-good-retrospective-8982bd839e16')
       end
 
       specify 'they can get help' do
@@ -251,6 +249,18 @@ context 'Felicity', type: :feature, js: true, if: ENV['USE_MOCK_GOOGLE'] == 'tru
           end
         end
       end
+    end
+  end
+
+  context 'from admin panel' do
+    specify 'sharing a retro' do
+      slug = 'i-can-be-shared'
+      password = 'opensesame'
+      create_sharable_retro_as_admin(slug, password)
+      visit "#{RETRO_APP_BASE_URL}/retros/#{slug}"
+      fill_in 'Password', with: password
+      click_on 'Login'
+      expect(get_share_url).to include "/retros/#{slug}/join/"
     end
   end
 

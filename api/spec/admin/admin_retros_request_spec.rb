@@ -37,7 +37,7 @@ describe '/admin/retros', type: :request do
       name: 'My Retro', password: 'the-password', video_link: 'the-video-link',
       created_at: Time.at(12_345_678), updated_at: Time.at(123_456_789), is_private: true, user: user
     )
-    1.times { Item.create!(retro: retro, description: 'Nonarchived item', category: :happy, vote_count: 0) }
+    Item.create!(retro: retro, description: 'Nonarchived item', category: :happy, vote_count: 0)
     Item.create!(retro: retro, description: 'Archived item A', category: :happy, vote_count: 5, archived_at: Time.at(0))
     Item.create!(retro: retro, description: 'Archived item B', category: :happy, vote_count: 2, archived_at: Time.at(0))
     3.times { ActionItem.create!(retro: retro, description: 'Nonarchived action') }
@@ -65,12 +65,12 @@ describe '/admin/retros', type: :request do
     end
 
     def column_href(doc, panel_name, column_name)
-      doc.at_xpath('//div[h3="' + panel_name + '"]//th/a[text()="' + column_name + '"]/@href').value
+      doc.at_xpath("//div[h3=\"#{panel_name}\"]//th/a[text()=\"#{column_name}\"]/@href").value
     end
 
     def click_column(doc, panel_name, column_name, expected_order)
       url = column_href(doc, panel_name, column_name)
-      expect(url).to include('order=' + expected_order)
+      expect(url).to include("order=#{expected_order}")
       authenticated_get url
       expect(status).to eq(200)
       Nokogiri::HTML(response.body)
@@ -129,6 +129,7 @@ describe '/admin/retros', type: :request do
                               'Ordered By',
                               'Password',
                               'Private',
+                              'Magic Link',
                               'User'
                             ])
     end
@@ -151,6 +152,7 @@ describe '/admin/retros', type: :request do
       expect(data[11]).to eq('the-video-link')
       expect(data[13]).to include('Yes')
       expect(data[14]).to include('Yes')
+      expect(data[15]).to include('No')
     end
 
     it 'has a filter for public/private retros' do
@@ -194,7 +196,7 @@ describe '/admin/retros', type: :request do
 
   describe 'index CSV export' do
     it 'includes the desired columns' do
-      get admin_retros_path + '.csv'
+      get "#{admin_retros_path}.csv"
       expect(status).to eq(200)
       expect(response.body).to include(
         'ID,Name,Slug,Items,Archived items,Action items,Archived action items,' \

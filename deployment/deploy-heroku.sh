@@ -43,8 +43,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 APP_HOST=$1
 SESSION_TIME=${SESSION_TIME:-'""'}
+ADMIN_EMAIL="${ADMIN_EMAIL:-email@example.com}"
+ADMIN_PASSWORD="${ADMIN_PASSWORD:-password}"
 HEROKU_REGION=${HEROKU_REGION:-'eu'}
-HEROKU_STACK=${HEROKU_STACK:-'heroku-18'}
+#HEROKU_STACK=${HEROKU_STACK:-'heroku-18'}
 
 ASSETS_DIR="$SCRIPT_DIR/../assets"
 CONFIG_DIR="$SCRIPT_DIR/config"
@@ -58,16 +60,17 @@ cp "$CONFIG_DIR/Procfile" "$ASSETS_DIR"
 ###################
 
 pushd "$ASSETS_DIR"
-  heroku create ${APP_HOST} --buildpack https://github.com/heroku/heroku-buildpack-ruby.git#v215 --region ${HEROKU_REGION} --stack ${HEROKU_STACK}
-  heroku addons:create heroku-postgresql:hobby-dev -a ${APP_HOST}
-  #heroku addons:create heroku-redis:hobby-dev -a ${APP_HOST}
-  heroku config:set WEBSOCKET_PORT=4443 SESSION_TIME=${SESSION_TIME} -a ${APP_HOST}
-  heroku config:set USE_POSTGRES_FOR_ACTION_CABLE=true -a ${APP_HOST}
+  heroku create "$APP_HOST" --buildpack https://github.com/heroku/heroku-buildpack-ruby.git#v227 --region "$HEROKU_REGION"
+  # heroku create "$APP_HOST" --buildpack https://github.com/heroku/heroku-buildpack-ruby.git#v227 --region "$HEROKU_REGION" --stack "$HEROKU_STACK"
+  heroku addons:create heroku-postgresql:hobby-dev -a "$APP_HOST"
+  # heroku addons:create heroku-redis:hobby-dev -a "$APP_HOST"
+  heroku config:set USE_POSTGRES_FOR_ACTION_CABLE=true -a "$APP_HOST"
+  heroku config:set WEBSOCKET_PORT=4443 "SESSION_TIME=$SESSION_TIME" -a "$APP_HOST"
 
   rm -rf .git # blow away any existent git directory from a previous run
   git init .
   git add .
   git commit -m "Packaging for initial Heroku deployment"
-  git push --set-upstream https://git.heroku.com/${APP_HOST}.git master
-  heroku run rake admin:create_user ADMIN_EMAIL=email@example.com ADMIN_PASSWORD=password -a ${APP_HOST} -x
+  git push --set-upstream "https://git.heroku.com/$APP_HOST.git" main
+  heroku run rake admin:create_user "ADMIN_EMAIL=$ADMIN_EMAIL" "ADMIN_PASSWORD=$ADMIN_PASSWORD" -a "$APP_HOST" -x
 popd

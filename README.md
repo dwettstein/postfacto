@@ -1,5 +1,5 @@
 # Postfacto
-[![Build Status](https://travis-ci.org/pivotal/postfacto.svg?branch=master)](https://travis-ci.org/pivotal/postfacto)
+[![Build Status](https://github.com/pivotal/postfacto/actions/workflows/push.yml/badge.svg)](https://github.com/pivotal/postfacto/actions/workflows/push.yml)
 
 Postfacto helps teams run great [retrospectives](https://content.pivotal.io/blog/how-to-run-a-really-good-retrospective) remotely.
 
@@ -28,15 +28,16 @@ Retros are designed to help teams improve and that's hard to do without taking a
 
 ## Deployment
 
-Postfacto is a self hosted product, this makes it easier for you to stay in control of your data. We aim to make it easy to deploy to as many locations as possible.
+Postfacto is a self hosted product, this makes it easier for you to stay in control of your data.
 
-First, download and extract the latest package from the [releases page](https://github.com/pivotal/postfacto/releases) before following the instructions below for your supported platform:
+We aim to make it easy to deploy to as many locations as possible, and currently support the following platforms:
 
-* [Tanzu Kubernetes Grid](deployment#tanzu-kubernetes-grid-vsphere)
-* [Tanzu Application Service](deployment/README.md#tanzu-application-service)
-* [Pivotal Web Services](deployment/README.md#pivotal-web-services)
-* [Cloud Foundry](deployment/README.md#cloud-foundry)
-* [Heroku](deployment/README.md#heroku)
+* Tanzu Kubernetes Grid
+* Tanzu Application Service
+* Cloud Foundry
+* Heroku
+
+Deployment instructions can be found [here](deployment/README.md).
 
 If the platforms above don't work for you; you may be able to find a way to run Postfacto yourself by following the Contributing Guide.
 

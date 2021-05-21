@@ -38,4 +38,4 @@ docker run -it \
   -p 4000:4000 \
   -v "${curr_dir}:/postfacto" \
   -v "${curr_dir}\docker_node_modules:/postfacto/web/node_modules" \
-  postfacto/dev:2.6.3-12.6.0
+  postfacto/dev:2.7.3-14.16.1
